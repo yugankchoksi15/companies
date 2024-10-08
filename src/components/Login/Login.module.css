@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+
+.paper {
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    width: 400px; 
+}
+
+.title {
+    margin-bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.input {
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+    font-size: 0.875rem; 
+    margin-bottom: 15px; 
+}

@@ -1,0 +1,18 @@
+.header {
+  text-align: left; 
+  background-color: #4dabf7;
+  padding: 1.5% 1%;
+  font-size: 24px;
+  align-items: center;
+  color: white;
+}
+.leftArrowButton{
+  width: 2%;
+  color: white!important;
+  margin-bottom: -8px;
+}
+
+/* .m_7485cace {
+      --container-size-md: calc(160rem * var(--mantine-scale));
+} */
+
