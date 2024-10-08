@@ -20,11 +20,30 @@
 
 .table {
   text-align: justify;
-  margin-left: 4%;
-  margin-right: 4%;
+  margin-inline: 2%;
 }
 
 .button {
-  float: right;
-  margin-bottom: 10px;
+  margin: 10px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background-color: var(--mantine-color-body);
+  transition: box-shadow 150ms ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom: rem(1px) solid
+      light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-3));
+  }
+}
+
+.scrolled {
+  box-shadow: var(--mantine-shadow-sm);
 }

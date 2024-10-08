@@ -4,22 +4,7 @@ import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom'; 
 import '@mantine/core/styles.css';
 import styles from './Login.module.css';
-import Header from '../Header/Header';
-
-const logindata = [
-  {
-    email: "Admin@gmail.com",
-    password: "Admin@123"
-  },
-  {
-    email: "User@gmail.com",
-    password: "User@123"
-  },
-  {
-    email: "Data@gmail.com",
-    password: "Data@123"
-  },
-];
+import { usersdata } from '../../assets/sample-data';
 
 function Login() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,14 +23,13 @@ function Login() {
         : /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/.test(value) 
         ? null 
         : 'Password must include at least one uppercase letter, one lowercase letter, and one number',
-      termsOfService: (value) => value ? null : 'You must agree to the terms of service',
     },
   });
 
   const navigate = useNavigate(); 
   const handleSubmit = (values) => {
     const { email, password } = values; 
-    const user = logindata.find(user => user.email === email);
+    const user = usersdata.find(user => user.email === email);
 
     if (user) {
       if (user.password === password) {
@@ -83,14 +67,6 @@ function Login() {
             {...form.getInputProps('password')}
             className={styles.input}
           />
-
-          <Checkbox
-            mt="md"
-            label="I agree to sell my privacy"
-            key={form.key('termsOfService')}
-            {...form.getInputProps('termsOfService', { type: 'checkbox' })}
-          />
-
           {errorMessage && (
             <Text color="red" className={styles.error}>
               {errorMessage}

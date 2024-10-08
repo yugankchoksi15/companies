@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, TextInput, Modal, Group } from "@mantine/core";
-import { getCompanies, createCompany,getIndustries,getSectors } from "../../api";
+import { Button, Table, Flex, TextInput, Avatar, Group, ScrollArea, Tooltip, ActionIcon } from "@mantine/core";
+import { getCompanies, createCompany, getIndustries, getSectors } from "../../api";
 import styles from "./Companies.module.css";
 import { useNavigate } from "react-router-dom";
 import AddModal from "../../modals/AddModal";
@@ -15,6 +15,8 @@ function Companies() {
   const [newCompanyWebsite, setNewCompanyWebsite] = useState("");
   const [inputWords, setInputWords] = useState({}); // Track new input values
   const [opened, setOpened] = useState(false);
+
+  const [scrolled, setScrolled] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ function Companies() {
   const fetchIndustries = async () => {
     try {
       const response = await getIndustries();
-      console.log("show industries",response);
+      console.log("show industries", response);
       setIndustries(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -45,21 +47,21 @@ function Companies() {
   const fetchSectors = async () => {
     try {
       const response = await getSectors();
-      console.log("show sectors",response);
+      console.log("show sectors", response);
       setSectors(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
       setSectors([]);
     }
   };
-  const handleAdd = ()=>{
+  const handleAdd = () => {
     setOpened(true);
     fetchIndustries();
     fetchSectors();
   }
   const handleAddCompany = async (inputWords) => {
     console.log("inputWords::", inputWords);
-    
+
     // Mapping the inputWords to the required payload format
     const newCompany = {
       client: inputWords.client,  // Use value from inputWords
@@ -118,15 +120,15 @@ function Companies() {
       type: inputWords.type || "",
       website: inputWords.website || ""
     };
-  
+
     console.log("Payload to be sent:", newCompany);
-  
+
     try {
       const response = await createCompany(newCompany);
       console.log("New Company Added:", response);
-  
+
       setCompanies((prevCompanies) => [...prevCompanies, response]);
-  
+
       // Reset inputWords to clear the modal fields
       setInputWords({});
       setOpened(false);
@@ -138,94 +140,87 @@ function Companies() {
       }
     }
   };
-  
-  
-
-  // const handleAddCompany = async () => {
-  //   const newCompany = {
-  //     name: newCompanyName,
-  //     email: newCompanyEmail,
-  //     reference: newCompanyReference,
-  //     website: newCompanyWebsite,
-  //   };
-  
-  //   // Log the payload to debug
-  //   console.log("Payload to be sent:", newCompany);
-  //   try {
-
-  //     const response = await createCompany(newCompany);
-  //     console.log("New Company Added:", response); 
-
-  //     setCompanies((prevCompanies) => [...prevCompanies, response]);
-
-  //     setOpened(false);
-  //     setNewCompanyName("");
-  //     setNewCompanyEmail("");
-  //     setNewCompanyReference("");
-  //     setNewCompanyWebsite("");
-  //   } catch (error) {
-  //     console.error("Error adding company:", error);
-  //   }
-  // };
 
   return (
-    <div className={styles.table}>
-  
-      <h1>Companies</h1>
-      <Button className={styles.button} onClick={handleAdd}>
-        Add Company
-      </Button>
-      <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Reference</th>
-            <th>Website</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(companies) &&
-            companies.map((company) => (
-              <tr key={company.id}>
-                <td>{company.name}</td>
-                <td>{company.email}</td>
-                <td>{company.reference}</td>
-                <td>{company.website}</td>
-                <td>
-                  <Group>
-                    <Button
-                      className={styles.button}
-                      variant="outline"
-                      size="xs"
-                      onClick={() => navigate(`/company/${company.id}`)}
-                    >
-                      View
-                    </Button>
-                  </Group>
-                  
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
-      <AddModal
-        opened={opened}
-        setOpened={setOpened}
-        newCompanyName={newCompanyName}
-        setNewCompanyName={setNewCompanyName}
-        newCompanyEmail={newCompanyEmail}
-        setNewCompanyEmail={setNewCompanyEmail}
-        newCompanyReference={newCompanyReference}
-        setNewCompanyReference={setNewCompanyReference}
-        newCompanyWebsite={newCompanyWebsite}
-        setNewCompanyWebsite={setNewCompanyWebsite}
-        handleAddCompany={handleAddCompany}
-        setInputWords={setInputWords} 
-        industries={industries}
-        sectors={sectors}
-      />
+    <div className="container">
+      <div className={styles.table}>
+        <Flex justify="flex-end">
+          <Button className={styles.button} onClick={handleAdd}>
+            Add Company
+          </Button>
+        </Flex>
+        <div>
+          <ScrollArea style={{ height: '75vh' }}>
+            <Table highlightOnHover onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+              <Table.Thead>
+                <Table.Tr>
+                  <th>Logo</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Reference</th>
+                  <th>Website</th>
+                  <th>Actions</th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {Array.isArray(companies) &&
+                  companies.map((company) => (
+                    <Table.Tr key={company.id}>
+                      <Avatar src={company.logoUrl} alt={company.name} radius="xl" size={40} />
+                      <td>{company.name}</td>
+                      <td>{company.email}</td>
+                      <td>{company.reference}</td>
+                      <td>
+                        {company.website ? (
+                          <Tooltip label={company.website} position="top">
+                            <ActionIcon
+                              onClick={() => window.open(company.website, '_blank')}
+                              variant="outline"
+                              size="lg"
+                            >
+                              Go
+                            </ActionIcon>
+                          </Tooltip>
+                        ) : (
+                          'N/A' // Or any fallback text if the website is not available
+                        )}
+                      </td>
+                      <td>
+                        <Group>
+                          <Button
+                            variant="outline"
+                            size="xs"
+                            onClick={() => navigate(`/company/${company.id}`)}
+                          >
+                            View
+                          </Button>
+                        </Group>
+
+                      </td>
+                    </Table.Tr>
+                  ))}
+              </Table.Tbody>
+            </Table>
+          </ScrollArea>
+        </div>
+
+        <AddModal
+          opened={opened}
+          setOpened={setOpened}
+          newCompanyName={newCompanyName}
+          setNewCompanyName={setNewCompanyName}
+          newCompanyEmail={newCompanyEmail}
+          setNewCompanyEmail={setNewCompanyEmail}
+          newCompanyReference={newCompanyReference}
+          setNewCompanyReference={setNewCompanyReference}
+          newCompanyWebsite={newCompanyWebsite}
+          setNewCompanyWebsite={setNewCompanyWebsite}
+          handleAddCompany={handleAddCompany}
+          setInputWords={setInputWords}
+          industries={industries}
+          sectors={sectors}
+        />
+      </div>
     </div>
   );
 }

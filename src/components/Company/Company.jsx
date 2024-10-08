@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCompanies } from '../../api';
-import { Modal, Table, Grid, Container } from '@mantine/core';
+import { Modal, Table, Grid, Container, Paper, Avatar, Flex } from '@mantine/core';
 import styles from '../Company/Company.module.css';
 import leftArrow from '../../assets/left-arrow-button.svg';
 
@@ -47,51 +47,23 @@ function Company() {
   }
 
   return (
-    <div className={styles.mainDiv}>
-      <h1 className={styles.header}>
-        <img
-          src={leftArrow}
-          alt='Back'
-          className={styles.leftArrowButton}
-          onClick={() => window.history.back()}
-        />
-        Company Details
-      </h1>
+    <div className={styles.container}>
       <div>
-        {/* Grid Container */}
-        <Container my="md">
-          <Grid>
-            {/* First Grid Section (40%) */}
-            <Grid.Col span={{ base: 12, xs: 4 }}>
-              <h2>Basic Information</h2>
-              {company.imageUrl ? (
-                <img src={company.imageUrl} alt={company.name} className={styles.companyImage} />
-              ) : (
-                <div>No Image Available</div>
-              )}
-              <Table striped highlightOnHover>
-                <tbody>
-                  <tr>
-                    <td>Name:</td>
-                    <td>{company.name || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Email:</td>
-                    <td>{company.email || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Reference:</td>
-                    <td>{company.reference || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Website:</td>
-                    <td>{company.website || '-'}</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Grid.Col>
+        <Grid>
+          <Grid.Col span={{ base: 12, xs: 5 }}>
+            <Paper h={'100%'} radius="lg" withBorder p="lg" bg="var(--mantine-color-body)">
+              <Flex>
+                <Avatar src={company.logoUrl} alt={company.name} radius="xl" size={250} />
+                <div className={styles.container}>
+              <h2>{company.name || '-'}</h2>
+              <h4>{company.reference || '-'}</h4>
+                </div>
+              </Flex>
+            </Paper>
+          </Grid.Col>
 
-            <Grid.Col span={{ base: 12, xs: 8 }}>
+          <Grid.Col span={{ base: 12, xs: 7 }}>
+            <Paper radius="lg" withBorder p="lg" bg="var(--mantine-color-body)">
               <h2>Head Office Information</h2>
               <Table striped highlightOnHover>
                 <tbody>
@@ -125,9 +97,11 @@ function Company() {
                   </tr>
                 </tbody>
               </Table>
-            </Grid.Col>
+            </Paper>
+          </Grid.Col>
 
-            <Grid.Col span={{ base: 12, xs: 8 }}>
+          <Grid.Col span={{ base: 12, xs: 8 }}>
+            <Paper radius="lg" withBorder p="lg" bg="var(--mantine-color-body)">
               <h2>Company Status & Details</h2>
               <Table striped highlightOnHover>
                 <tbody>
@@ -161,9 +135,11 @@ function Company() {
                   </tr>
                 </tbody>
               </Table>
-            </Grid.Col>
+            </Paper>
+          </Grid.Col>
 
-            <Grid.Col span={{ base: 12, xs: 4 }}>
+          <Grid.Col span={{ base: 12, xs: 4 }}>
+            <Paper radius="lg" withBorder p="lg" bg="var(--mantine-color-body)">
               <h2>Company Additional Details</h2>
               <Table striped highlightOnHover>
                 <tbody>
@@ -197,10 +173,11 @@ function Company() {
                   </tr>
                 </tbody>
               </Table>
-            </Grid.Col>
+            </Paper>
+          </Grid.Col>
 
-          </Grid>
-        </Container>
+        </Grid>
+        {/* </Container> */}
       </div>
       <Modal opened={opened} onClose={handleClose} title="More Details"></Modal>
     </div>

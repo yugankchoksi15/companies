@@ -6,6 +6,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import Company from '../src/components/Company/Company';
 import Header from '../src/components/Header/Header';
+import './App.css';
 
 function App() {
   return (
