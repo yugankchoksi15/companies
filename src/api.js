@@ -27,3 +27,8 @@ export const getSectors = async () => {
   const response = await api.get('sector?apiKey=HIRE840770DDB2F381CA41BA84AA6A9ABE68B0EE');
   return response.data;
 };
+export const getStatus = async () => {
+  const response = await api.get('/company/status?apiKey=HIRE840770DDB2F381CA41BA84AA6A9ABE68B0EE');
+  return response.data;
+};
+
