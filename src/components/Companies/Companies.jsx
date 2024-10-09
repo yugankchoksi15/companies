@@ -159,6 +159,7 @@ function Companies() {
                   <th>Email</th>
                   <th>Reference</th>
                   <th>Website</th>
+                  <th>Status</th>
                   <th>Actions</th>
                 </Table.Tr>
               </Table.Thead>
@@ -183,6 +184,23 @@ function Companies() {
                           </Tooltip>
                         ) : (
                           'N/A' // Or any fallback text if the website is not available
+                        )}
+                      </td>
+                      <td>
+                        {company.status && company.status.name && company.status.color ? (
+                          <Button
+                            // variant="light"
+                            style={{ backgroundColor: company.status.color }}
+                            onClick={() => {
+                              console.log(`Company ID: ${company.id}`);
+                              console.log(`Status Name: ${company.status.name}`);
+                              console.log(`Status Color: ${company.status.color}`);
+                            }}
+                          >
+                            {company.status.name}{" "}
+                          </Button>
+                        ) : (
+                          "N/A"
                         )}
                       </td>
                       <td>
