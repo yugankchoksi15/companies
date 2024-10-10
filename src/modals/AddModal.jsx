@@ -101,7 +101,6 @@ function AddModal({
           {/* Step 1: Basic Information */}
           <Stepper.Step label="Basic Information">
             {data.map((field, index) => {
-              console.log("field", field);
 
               if (activeStep === 0 && index < 10) {
                 const isBooleanField = field.type === "Switch";
@@ -253,7 +252,6 @@ function AddModal({
 
           <Stepper.Step label="Contact Information">
             {data.map((field, index) => {
-              console.log("field", field);
 
               if (activeStep === 1 && index >= 10 && index < 17) {
                 const isBooleanField = field.type === "Switch";
@@ -405,7 +403,6 @@ function AddModal({
 
           <Stepper.Step label="Job Information">
             {data.map((field, index) => {
-              console.log("field", field);
 
               if (activeStep === 2 && index >= 17 && index < 22) {
                 const isBooleanField = field.type === "Switch";
