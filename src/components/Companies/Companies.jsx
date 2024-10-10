@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, Flex, TextInput, Avatar, Group, ScrollArea, Tooltip, ActionIcon } from "@mantine/core";
-import { getCompanies, createCompany, getIndustries, getSectors } from "../../api";
+import { getCompanies, createCompany, getIndustries, getSectors,getStatus } from "../../api";
 import styles from "./Companies.module.css";
 import { useNavigate } from "react-router-dom";
 import AddModal from "../../modals/AddModal";
@@ -9,6 +9,7 @@ function Companies() {
   const [companies, setCompanies] = useState([]);
   const [industries, setIndustries] = useState([]);
   const [sectors, setSectors] = useState([]);
+  const [status, setStatus] = useState([]);
   const [newCompanyName, setNewCompanyName] = useState("");
   const [newCompanyEmail, setNewCompanyEmail] = useState("");
   const [newCompanyReference, setNewCompanyReference] = useState("");
@@ -54,10 +55,21 @@ function Companies() {
       setSectors([]);
     }
   };
+  const fetchStatus = async () => {
+    try {
+      const response = await getStatus();
+      console.log("show status", response);
+      setStatus(response.data || []);
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+      setStatus([]);
+    }
+  };
   const handleAdd = () => {
     setOpened(true);
     fetchIndustries();
     fetchSectors();
+    fetchStatus();
   }
   const handleAddCompany = async (inputWords) => {
     console.log("inputWords::", inputWords);
@@ -237,6 +249,7 @@ function Companies() {
           setInputWords={setInputWords}
           industries={industries}
           sectors={sectors}
+          status={status}
         />
       </div>
     </div>
