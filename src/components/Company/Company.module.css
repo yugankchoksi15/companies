@@ -1,23 +1,32 @@
-/* .header {
-  text-align: left; 
-  background-color: #4dabf7;
-  padding: 1.5% 1%;
-  font-size: 24px;
-  align-items: center;
-  color: white;
-}
-.leftArrowButton{
-  width: 2%;
-  color: white!important;
-  margin-bottom: -8px;
-} */
-
-/* .m_7485cace {
-      --container-size-md: calc(160rem * var(--mantine-scale));
-} */
-
 .container {
   margin-inline: 5%;
   margin-block: 1rem;
 }
+.icons{
+  display: flex;
+  gap: 10px;
+  width: 12px;
+  height: 15px;
+  padding-top: 28%;
+  padding-left: 30%;
+}
+.TextInput{
+  width: 50%;
+  height: 30%;
+  margin-bottom: 10px;
+}
+.SwitchBody{
+  margin-bottom: 12px;
+}
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.table{
+  width: 50%;
+}
+.lable{
+  height: 30px;
+}
+
 

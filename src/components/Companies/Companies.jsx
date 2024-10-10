@@ -28,7 +28,7 @@ function Companies() {
   const fetchCompanies = async () => {
     try {
       const response = await getCompanies();
-      console.log(response);
+      console.log(response.data);
       setCompanies(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
