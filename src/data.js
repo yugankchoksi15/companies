@@ -1,22 +1,45 @@
 // Basic stepper field
 const data = [
   {
-    label: "Client",
-    apikey: "client",
-    value: false,
-    type: "Switch",
+    label: "Name",
+    apikey: "name",
+    value: "",
+    type: "TextInput",
+    required: true, // Required field
   },
   {
-    label: "Domain",
-    apikey: "domain",
-    value: null,
+    label: "Reference",
+    apikey: "reference",
+    value: "",
     type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Employees",
     apikey: "employees",
     value: null,
     type: "TextInput",
+    required: true, // Required field
+  },
+  {
+    label: "Description",
+    apikey: "description",
+    value: null,
+    type: "TextInput",
+  },
+  {
+    label: "Client",
+    apikey: "client",
+    value: false,
+    type: "Switch",
+    required: true, // Required field
+  },
+  {
+    label: "Domain",
+    apikey: "domain",
+    value: null,
+    type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Logo URL",
@@ -29,35 +52,19 @@ const data = [
     apikey: "industries",
     value: [],
     type: "MultiSelect",
+    required: true, // Required field
   },
   {
     label: "Sectors",
     apikey: "sectors",
     value: [],
     type: "MultiSelect",
-  },
-  {
-    label: "Description",
-    apikey: "description",
-    value: null,
-    type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Image URL",
     apikey: "imageUrl",
     value: null,
-    type: "TextInput",
-  },
-  {
-    label: "Name",
-    apikey: "name",
-    value: "",
-    type: "TextInput",
-  },
-  {
-    label: "Reference",
-    apikey: "reference",
-    value: "",
     type: "TextInput",
   },
 
@@ -73,6 +80,7 @@ const data = [
     apikey: "phone",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Twitter",
@@ -85,8 +93,8 @@ const data = [
     apikey: "email",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
-
   {
     label: "Facebook",
     apikey: "facebook",
@@ -106,7 +114,6 @@ const data = [
     type: "TextInput",
   },
   // job details stepper
-
   {
     label: "Labels",
     apikey: "labels",
@@ -119,6 +126,7 @@ const data = [
     apikey: "languages",
     value: null,
     type: "TextInput",
+    addKey: true,
   },
   {
     label: "Placements",
@@ -133,7 +141,6 @@ const data = [
     type: "TextInput",
     addKey: true,
   },
-
   {
     label: "Open Jobs",
     apikey: "openJobs",
@@ -148,12 +155,12 @@ const data = [
     type: "TextInput",
     addKey: true,
   },
-
   {
     label: "Head Office Name",
     apikey: "name",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Address Line",
@@ -172,6 +179,7 @@ const data = [
     apikey: "cityName",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Region Name",
@@ -190,6 +198,7 @@ const data = [
     apikey: "countryCode",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "Latitude",
@@ -208,6 +217,7 @@ const data = [
     apikey: "countryName",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
   {
     label: "City or Region and Post Code",
@@ -246,18 +256,12 @@ const data = [
     apikey: "ownerName",
     value: "",
     type: "TextInput",
+    required: true, // Required field
   },
-
   {
     label: "Rating",
     apikey: "rating",
     value: null,
-    type: "TextInput",
-  },
-  {
-    label: "Status Color",
-    apikey: "color",
-    value: "",
     type: "TextInput",
   },
   {
@@ -267,16 +271,12 @@ const data = [
     type: "TextInput",
   },
   {
-    label: "Status ID",
-    apikey: "statusId",
-    value: null,
-    type: "TextInput",
-  },
-  {
     label: "Status",
     apikey: "status",
     value: "",
     type: "Select",
+    required: true, // Required field
   },
 ];
+
 export default data;

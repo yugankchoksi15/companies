@@ -28,7 +28,6 @@ function Companies() {
   const fetchCompanies = async () => {
     try {
       const response = await getCompanies();
-      console.log(response.data);
       setCompanies(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -38,7 +37,6 @@ function Companies() {
   const fetchIndustries = async () => {
     try {
       const response = await getIndustries();
-      console.log("show industries", response);
       setIndustries(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -48,7 +46,6 @@ function Companies() {
   const fetchSectors = async () => {
     try {
       const response = await getSectors();
-      console.log("show sectors", response);
       setSectors(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -58,7 +55,6 @@ function Companies() {
   const fetchStatus = async () => {
     try {
       const response = await getStatus();
-      console.log("show status", response);
       setStatus(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -72,7 +68,6 @@ function Companies() {
     fetchStatus();
   }
   const handleAddCompany = async (inputWords) => {
-    console.log("inputWords::", inputWords);
 
     // Mapping the inputWords to the required payload format
     const newCompany = {
@@ -133,11 +128,9 @@ function Companies() {
       website: inputWords.website || ""
     };
 
-    console.log("Payload to be sent:", newCompany);
 
     try {
       const response = await createCompany(newCompany);
-      console.log("New Company Added:", response);
 
       setCompanies((prevCompanies) => [...prevCompanies, response]);
 
@@ -204,9 +197,6 @@ function Companies() {
                             // variant="light"
                             style={{ backgroundColor: company.status.color }}
                             onClick={() => {
-                              console.log(`Company ID: ${company.id}`);
-                              console.log(`Status Name: ${company.status.name}`);
-                              console.log(`Status Color: ${company.status.color}`);
                             }}
                           >
                             {company.status.name}{" "}

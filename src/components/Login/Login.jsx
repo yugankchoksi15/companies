@@ -33,7 +33,6 @@ function Login() {
 
     if (user) {
       if (user.password === password) {
-        console.log('Login successful', user); 
         setErrorMessage('');
 
         localStorage.setItem('userEmail', user.email); 
