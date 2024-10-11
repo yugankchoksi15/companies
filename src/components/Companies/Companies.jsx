@@ -9,6 +9,8 @@ import {
   ScrollArea,
   Tooltip,
   ActionIcon,
+  Pagination,
+  Badge,
 } from "@mantine/core";
 import {
   getCompanies,
@@ -202,16 +204,9 @@ function Companies() {
     // Update the companies state
     setCompanies((prevCompanies) => [...prevCompanies, newCompany]);
 
-      // Reset inputWords to clear the modal fields
-      setInputWords({});
-      setOpened(false);
-    } catch (error) {
-      console.error("Error adding company:", error.message);
-      if (error.response) {
-        console.error("Server responded with:", error.response.data);
-        console.error("Status code:", error.response.status);
-      }
-    }
+    // Clear input words and close modal after successful addition
+    setInputWords({});
+    setOpened(false);
   };
   console.log("companies:",companies.length);
 
