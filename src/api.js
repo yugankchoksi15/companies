@@ -91,7 +91,12 @@ export const getCompanies = async () => {
       },
     ],
     skills: ["Engineering", "Drawing", "Accounting"],
-    statusId: "aae634ef-2157-4372-b5ae-d44ca0e9a7ab",
+    status:{
+      id: "a847d030-18ed-4602-a574-d73af4d1133c",
+      color:"#000000",
+      name: "Active",
+      position: 0,
+    },
     type: "ACTIVE_FILTER",
     website: "https://www.wix.com/blog/hobby-website",
   };

@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Flex, TextInput, Avatar, Group, ScrollArea, Tooltip, ActionIcon ,Badge , Pagination} from "@mantine/core";
-import { getCompanies, createCompany, getIndustries, getSectors,getStatus } from "../../api";
+import {
+  Button,
+  Table,
+  Flex,
+  TextInput,
+  Avatar,
+  Group,
+  ScrollArea,
+  Tooltip,
+  ActionIcon,
+} from "@mantine/core";
+import {
+  getCompanies,
+  createCompany,
+  getIndustries,
+  getSectors,
+  getStatus,
+} from "../../api";
 import styles from "./Companies.module.css";
 import { useNavigate } from "react-router-dom";
 import AddModal from "../../modals/AddModal";
+import Cookies from "js-cookie";
 
 function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -25,17 +42,31 @@ function Companies() {
 
   useEffect(() => {
     fetchCompanies();
-  }, [currentPage]);
-
+  }, []);
   const fetchCompanies = async () => {
     try {
-      const response = await getCompanies(currentPage, itemsPerPage);
-      setCompanies(response.data || []);
+      // Fetch data from API
+      const response = await getCompanies();
+      const apiCompanies = response.data || [];
+  
+      // Retrieve and parse saved company data from cookies
+      const savedCompanyData = Cookies.get("companyData");
+      const parsedSavedCompanies = savedCompanyData
+        ? JSON.parse(savedCompanyData) // Assume saved data is an array
+        : [];
+  
+      // Combine API data and cookie data (if exists)
+      const combinedCompanies = [...apiCompanies, ...parsedSavedCompanies]; // Combine arrays
+  
+      // Set the combined data into the state
+      setCompanies(combinedCompanies);
     } catch (error) {
       console.error("Error fetching companies:", error);
-      setCompanies([]);
+      setCompanies([]); // Set empty state on error
     }
   };
+  
+
   const fetchIndustries = async () => {
     try {
       const response = await getIndustries();
@@ -68,12 +99,13 @@ function Companies() {
     fetchIndustries();
     fetchSectors();
     fetchStatus();
-  }
-  const handleAddCompany = async (inputWords) => {
+  };
 
+  const handleAddCompany = (inputWords) => {
     // Mapping the inputWords to the required payload format
     const newCompany = {
-      client: inputWords.client,  // Use value from inputWords
+      id: Math.random().toString(36).substr(2, 9), // Generate a unique ID
+      client: inputWords.client,
       createdBySystem: inputWords.createdBySystem,
       description: inputWords.description || "",
       domain: inputWords.domain || "",
@@ -81,64 +113,95 @@ function Companies() {
       employees: inputWords.employees || "",
       facebook: inputWords.facebook || "",
       faxNo: inputWords.faxNo || "",
-      headOffice: inputWords.addressLine ? {
-        address: {
-          addressLine: inputWords.addressLine,
-          addressLine2: inputWords.addressLine2 || "",
-          cityName: inputWords.cityName || "",
-          countryCode: inputWords.countryCode || "",
-          countryName: inputWords.countryName || "",
-          latitude: parseFloat(inputWords.latitude) || 0,
-          longitude: parseFloat(inputWords.longitude) || 0,
-          postCode: inputWords.postCode || "",
-          regionName: inputWords.regionName || ""
-        },
-        name: "Head office"
-      } : null,  // Only include if addressLine is provided
+      headOffice: inputWords.addressLine
+        ? {
+            address: {
+              addressLine: inputWords.addressLine,
+              addressLine2: inputWords.addressLine2 || "",
+              cityName: inputWords.cityName || "",
+              countryCode: inputWords.countryCode || "",
+              countryName: inputWords.countryName || "",
+              latitude: parseFloat(inputWords.latitude) || 0,
+              longitude: parseFloat(inputWords.longitude) || 0,
+              postCode: inputWords.postCode || "",
+              regionName: inputWords.regionName || "",
+            },
+            name: inputWords.headOfficeName || "Head office",
+          }
+        : null,
       imageUrl: inputWords.imageUrl || "",
-      industries: inputWords.industries ? [{ id: "", name: inputWords.industries }] : [],
+      industries: inputWords.industries
+        ? inputWords.industries.map((industry) => ({
+            id: industry,
+            name: industry,
+          }))
+        : [],
       labels: inputWords.labels || [],
-      languages: inputWords.languages ? inputWords.languages.split(",").map(lang => lang.trim()) : [],
+      languages: Array.isArray(inputWords.languages)
+        ? inputWords.languages
+        : inputWords.languages
+        ? inputWords.languages.split(",").map((lang) => lang.trim())
+        : [],
       linkedIn: inputWords.linkedIn || "",
       logoUrl: inputWords.logoUrl || "",
       name: inputWords.name || "",
       openJobs: inputWords.openJobs,
-      otherOffices: inputWords.otherOffices ? [{
-        address: {
-          addressLine: inputWords.otherOffices.addressLine || "",
-          addressLine2: inputWords.otherOffices.addressLine2 || "",
-          cityName: inputWords.otherOffices.cityName || "",
-          countryCode: inputWords.otherOffices.countryCode || "",
-          countryName: inputWords.otherOffices.countryName || "",
-          latitude: parseFloat(inputWords.otherOffices.latitude) || 0,
-          longitude: parseFloat(inputWords.otherOffices.longitude) || 0,
-          postCode: inputWords.otherOffices.postCode || "",
-          regionName: inputWords.otherOffices.regionName || ""
-        },
-        name: inputWords.otherOffices.name || ""
-      }] : [],
+      otherOffices: inputWords.otherOffices
+        ? [
+            {
+              address: {
+                addressLine: inputWords.addressLine || "",
+                addressLine2: inputWords.addressLine2 || "",
+                cityName: inputWords.cityName || "",
+                countryCode: inputWords.countryCode || "",
+                countryName: inputWords.countryName || "",
+                latitude: parseFloat(inputWords.latitude) || 0,
+                longitude: parseFloat(inputWords.longitude) || 0,
+                postCode: inputWords.postCode || "",
+                regionName: inputWords.regionName || "",
+              },
+              name: inputWords.name || "",
+            },
+          ]
+        : [],
       ownerId: inputWords.ownerId || "",
       ownerName: inputWords.ownerName || "",
       phone: inputWords.phone || "",
       placements: inputWords.placements,
       rating: inputWords.rating ? parseInt(inputWords.rating) : 0,
       reference: inputWords.reference || "",
-      sectors: inputWords.sectors ? [{ id: "", name: inputWords.sectors }] : [],
-      skills: inputWords.skills ? inputWords.skills.split(",").map(skill => skill.trim()) : [],
-      statusId: inputWords.statusId || "",
-      // status:{
-      //   id: "a847d030-18ed-4602-a574-d73af4d1133c",
-      //   color:"#000000",
-      //   name: "Active",
-      //   position: 0,
-      // },
+      sectors: inputWords.sectors
+        ? inputWords.sectors.map((sector) => ({ id: sector, name: sector }))
+        : [],
+      skills: Array.isArray(inputWords.skills)
+        ? inputWords.skills
+        : inputWords.skills
+        ? inputWords.skills.split(",").map((skill) => skill.trim())
+        : [],
+      statusId: inputWords.status || "",
       type: inputWords.type || "",
-      website: inputWords.website || ""
+      website: inputWords.website || "",
     };
 
-    try {
-      const response = await createCompany(newCompany);
-      setCompanies((prevCompanies) => [...prevCompanies, response]);
+    // Retrieve existing company data from cookies
+    const savedCompanyData = Cookies.get("companyData");
+    const existingCompanies = savedCompanyData
+      ? JSON.parse(savedCompanyData)
+      : [];
+
+    // Ensure existingCompanies is always an array
+    const updatedCompanies = Array.isArray(existingCompanies)
+      ? [...existingCompanies, newCompany]
+      : [newCompany]; // If it was not an array, initialize with the new company
+
+    // Save updated company data to cookies
+    Cookies.set("companyData", JSON.stringify(updatedCompanies), {
+      expires: 7,
+    });
+
+    // Update the companies state
+    setCompanies((prevCompanies) => [...prevCompanies, newCompany]);
+
       // Reset inputWords to clear the modal fields
       setInputWords({});
       setOpened(false);
@@ -166,8 +229,11 @@ function Companies() {
           </Button>
         </Flex>
         <div>
-          <ScrollArea style={{ height: '75vh' }}>
-            <Table highlightOnHover onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+          <ScrollArea style={{ height: "75vh" }}>
+            <Table
+              highlightOnHover
+              onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+            >
               <Table.Thead>
                 <Table.Tr>
                   <th>Logo</th>
@@ -183,7 +249,12 @@ function Companies() {
                 {Array.isArray(currentCompanies) &&
                   currentCompanies.map((company) => (
                     <Table.Tr key={company.id}>
-                      <Avatar src={company.logoUrl} alt={company.name} radius="xl" size={40} />
+                      <Avatar
+                        src={company.logoUrl}
+                        alt={company.name}
+                        radius="xl"
+                        size={40}
+                      />
                       <td>{company.name}</td>
                       <td>{company.email}</td>
                       <td>{company.reference}</td>
@@ -191,7 +262,9 @@ function Companies() {
                         {company.website ? (
                           <Tooltip label={company.website} position="top">
                             <ActionIcon
-                              onClick={() => window.open(company.website, '_blank')}
+                              onClick={() =>
+                                window.open(company.website, "_blank")
+                              }
                               variant="outline"
                               size="lg"
                             >
@@ -199,7 +272,7 @@ function Companies() {
                             </ActionIcon>
                           </Tooltip>
                         ) : (
-                          'N/A' // Or any fallback text if the website is not available
+                          "N/A" // Or any fallback text if the website is not available
                         )}
                       </td>
                       <td>
@@ -221,7 +294,6 @@ function Companies() {
                             View
                           </Button>
                         </Group>
-
                       </td>
                     </Table.Tr>
                   ))}

@@ -5,26 +5,23 @@ const data = [
     apikey: "name",
     value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "Reference",
     apikey: "reference",
     value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "Employees",
     apikey: "employees",
     value: null,
-    type: "TextInput",
-    required: true, // Required field
+    type: "NumberInput",
   },
   {
     label: "Description",
     apikey: "description",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
@@ -32,19 +29,17 @@ const data = [
     apikey: "client",
     value: false,
     type: "Switch",
-    required: true, // Required field
   },
   {
     label: "Domain",
     apikey: "domain",
-    value: null,
+    value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "Logo URL",
     apikey: "logoUrl",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
@@ -52,19 +47,17 @@ const data = [
     apikey: "industries",
     value: [],
     type: "MultiSelect",
-    required: true, // Required field
   },
   {
     label: "Sectors",
     apikey: "sectors",
     value: [],
     type: "MultiSelect",
-    required: true, // Required field
   },
   {
     label: "Image URL",
     apikey: "imageUrl",
-    value: null,
+    value: "",
     type: "TextInput",
   },
 
@@ -73,19 +66,18 @@ const data = [
     label: "Fax No",
     apikey: "faxNo",
     value: "",
-    type: "TextInput",
+    type: "NumberInput",
   },
   {
     label: "Phone",
     apikey: "phone",
     value: "",
-    type: "TextInput",
-    required: true, // Required field
+    type: "NumberInput",
   },
   {
     label: "Twitter",
     apikey: "twitter",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
@@ -93,18 +85,17 @@ const data = [
     apikey: "email",
     value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "Facebook",
     apikey: "facebook",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
     label: "LinkedIn",
     apikey: "linkedIn",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
@@ -118,14 +109,28 @@ const data = [
     label: "Labels",
     apikey: "labels",
     value: [],
-    type: "TextInput",
+    type: "TagsInput",
     addKey: true,
   },
   {
     label: "Languages",
     apikey: "languages",
-    value: null,
-    type: "TextInput",
+    value: [],
+    type: "TagsInput",
+    addKey: true,
+  },
+  {
+    label: "Skills",
+    apikey: "skills",
+    value: [],
+    type: "TagsInput",
+    addKey: true,
+  },
+  {
+    label: "Tags",
+    apikey: "tags",
+    value: [],
+    type: "TagsInput",
     addKey: true,
   },
   {
@@ -135,13 +140,6 @@ const data = [
     type: "Switch",
   },
   {
-    label: "Tags",
-    apikey: "tags",
-    value: [],
-    type: "TextInput",
-    addKey: true,
-  },
-  {
     label: "Open Jobs",
     apikey: "openJobs",
     value: false,
@@ -149,29 +147,21 @@ const data = [
   },
   // Head office information
   {
-    label: "Skills",
-    apikey: "skills",
-    value: [],
-    type: "TextInput",
-    addKey: true,
-  },
-  {
     label: "Head Office Name",
-    apikey: "name",
+    apikey: "headOfficeName",
     value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "Address Line",
     apikey: "addressLine",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
     label: "Address Line 2",
     apikey: "addressLine2",
-    value: null,
+    value: "",
     type: "TextInput",
   },
   {
@@ -179,7 +169,6 @@ const data = [
     apikey: "cityName",
     value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "Region Name",
@@ -191,39 +180,37 @@ const data = [
     label: "Post Code",
     apikey: "postCode",
     value: null,
-    type: "TextInput",
+    type: "NumberInput",
   },
   {
     label: "Country Code",
     apikey: "countryCode",
-    value: "",
-    type: "TextInput",
-    required: true, // Required field
+    value: null,
+    type: "NumberInput",
   },
   {
     label: "Latitude",
     apikey: "latitude",
     value: null,
-    type: "TextInput",
+    type: "NumberInput",
   },
   {
     label: "Longitude",
     apikey: "longitude",
     value: null,
-    type: "TextInput",
+    type: "NumberInput",
   },
   {
     label: "Country Name",
     apikey: "countryName",
     value: "",
     type: "TextInput",
-    required: true, // Required field
   },
   {
     label: "City or Region and Post Code",
     apikey: "cityOrRegionAndPostCode",
     value: "",
-    type: "TextInput",
+    type: "NumberInput",
   },
   {
     label: "Country",
@@ -245,6 +232,19 @@ const data = [
   },
 
   //Add  information
+  
+  {
+    label: "Owner Name",
+    apikey: "ownerName",
+    value: "",
+    type: "TextInput",
+  },
+  {
+    label: "Status Position",
+    apikey: "position",
+    value: null,
+    type: "NumberInput",
+  },
   {
     label: "Created by System",
     apikey: "createdBySystem",
@@ -252,30 +252,16 @@ const data = [
     type: "Switch",
   },
   {
-    label: "Owner Name",
-    apikey: "ownerName",
-    value: "",
-    type: "TextInput",
-    required: true, // Required field
-  },
-  {
     label: "Rating",
     apikey: "rating",
     value: null,
-    type: "TextInput",
-  },
-  {
-    label: "Status Position",
-    apikey: "position",
-    value: null,
-    type: "TextInput",
+    type: "Rating",
   },
   {
     label: "Status",
     apikey: "status",
     value: "",
     type: "Select",
-    required: true, // Required field
   },
 ];
 
