@@ -118,61 +118,102 @@ function Company() {
                         </a>
                       </ActionIcon>
                     </Tooltip>
-                    {/* <Tooltip label="Fax Number" disabled={!company.faxNo}>
-                      <ActionIcon size={42} variant="default" className={`${styles.actionIcon} ${!company.faxNo ? styles.disabled : ''}`}>
-                        <a href={company.faxNo} target="_blank" rel="noopener noreferrer">
-                          <img
-                            src={faxNo}
-                            alt="Fax No"
-                          />
-                        </a>
-                      </ActionIcon>
-                    </Tooltip> */}
                   </div>
                 </div>
               </Flex>
             </Paper>
           </Grid.Col>
-
           <Grid.Col span={{ base: 12, xs: 7 }}>
             <Paper radius="lg" withBorder p="lg" bg="var(--mantine-color-body)">
               <h2>Head Office Information</h2>
-              <Table striped highlightOnHover className={styles.table}>
-                <tbody>
-                  <tr>
-                    <td>Address Line:</td>
-                    <td>{company.headOffice.address.addressLine || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Address Line2:</td>
-                    <td>{company.headOffice.address.addressLine2 || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>City Name:</td>
-                    <td>{company.headOffice.address.cityName || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Region Name:</td>
-                    <td>{company.headOffice.address.regionName || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Post Code:</td>
-                    <td>{company.headOffice.address.postCode || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Country Code:</td>
-                    <td>{company.headOffice.address.countryCode || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td>Country Name:</td>
-                    <td>{company.headOffice.address.countryName || '-'}</td>
-                  </tr>
-                  <tr>
-                    <td> City Or Region And Post Code:</td>
-                    <td>{company.headOffice.address.cityOrRegionAndPostCode || '-'}</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <Grid>
+                <Grid.Col span={6}>
+                  <div>
+                    <Table striped highlightOnHover >
+                      <tbody >
+                        <tr className={styles.lable}>
+                          <td>Address Line:</td>
+                          <td>{company.headOffice.address.addressLine || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Address Line2:</td>
+                          <td>{company.headOffice.address.addressLine2 || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>City Name:</td>
+                          <td>{company.headOffice.address.cityName || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Region Name:</td>
+                          <td>{company.headOffice.address.regionName || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Post Code:</td>
+                          <td>{company.headOffice.address.postCode || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Country Code:</td>
+                          <td>{company.headOffice.address.countryCode || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Country Name:</td>
+                          <td>{company.headOffice.address.countryName || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td> City Or Region And Post Code:</td>
+                          <td>{company.headOffice.address.cityOrRegionAndPostCode || '-'}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <div>
+                    <Table striped highlightOnHover >
+                      <tbody>
+
+                        <tr className={styles.label}>
+                          <td>Skills:</td>
+                          <td>
+                            {company.skills && company.skills.length > 0
+                              ? company.skills.join(', ')
+                              : '-'}
+                          </td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Longitude:</td>
+                          <td>{company.headOffice.address.longitude || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Short Address Line:</td>
+                          <td>{company.headOffice.address.shortAddressLine || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td>Country:</td>
+                          <td>{company.headOffice.address.country || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td> City Region:</td>
+                          <td>{company.headOffice.address.cityRegion || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td> Address Label:</td>
+                          <td>{company.headOffice.address.addressLabel || '-'}</td>
+                        </tr>
+                        <tr className={styles.lable}>
+                          <td> Latitude:</td>
+                          <td>{company.headOffice.address.latitude || '-'}</td>
+                        </tr>
+
+                        <tr className={styles.lable}>
+                          <td> TenantName:</td>
+                          <td>{company.tenantName || '-'}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </Grid.Col>
+              </Grid>
             </Paper>
           </Grid.Col>
           <Grid.Col span={{ base: 12, xs: 7 }}>
@@ -211,13 +252,13 @@ function Company() {
                             }}
                           />
                         </tr>
-                        <tr>
-                          <td>Open Jobs:</td>
-                          <Switch className={styles.SwitchBody}
-                            checked={company.openJobs}
-                            onChange={(event) => {
-                            }}
-                          />
+                        <tr className={styles.lable} >
+                          <td>Labels:</td>
+                          <td>
+                            {company.labels && company.labels.length > 0
+                              ? company.labels.map(label => label.id).join(', ')
+                              : '-'}
+                          </td>
                         </tr>
                         <tr >
                           <td>Placements:</td>
@@ -239,13 +280,13 @@ function Company() {
                   <div>
                     <Table striped highlightOnHover >
                       <tbody>
-                        <tr className={styles.lable} >
-                          <td>Labels:</td>
-                          <td>
-                            {company.labels && company.labels.length > 0
-                              ? company.labels.map(label => label.id).join(', ')
-                              : '-'}
-                          </td>
+                      <tr>
+                          <td>Open Jobs:</td>
+                          <Switch className={styles.SwitchBody}
+                            checked={company.openJobs}
+                            onChange={(event) => {
+                            }}
+                          />
                         </tr>
                         <tr className={styles.label}>
                           <td>Parent Labels:</td>
@@ -348,13 +389,13 @@ function Company() {
                     <td>{company.description || '-'}</td>
                   </tr>
                   <tr>
-                          <td>Has Valid Geo:</td>
-                          <Switch className={styles.SwitchBody}
-                            checked={company.hasValidGeo}
-                            onChange={(event) => {
-                            }}
-                          />
-                        </tr>
+                    <td>Has Valid Geo:</td>
+                    <Switch className={styles.SwitchBody}
+                      checked={company.hasValidGeo}
+                      onChange={(event) => {
+                      }}
+                    />
+                  </tr>
                 </tbody>
               </Table>
             </Paper>
