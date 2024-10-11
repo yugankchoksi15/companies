@@ -7,7 +7,6 @@ import leftArrow from '../../assets/left-arrow-button.svg';
 import facebook from '../../assets/facebook.svg';
 import linkedin from '../../assets/linkedin.svg';
 import twitter from '../../assets/twitter.svg';
-import faxNo from '../../assets/printer.svg';
 import email from '../../assets/mail.svg';
 import { Tooltip, ActionIcon } from '@mantine/core';
 import { Switch } from '@mantine/core';

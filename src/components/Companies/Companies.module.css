@@ -43,7 +43,3 @@
       light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-3));
   }
 }
-
-.scrolled {
-  box-shadow: var(--mantine-shadow-sm);
-}

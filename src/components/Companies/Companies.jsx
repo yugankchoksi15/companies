@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Flex, TextInput, Avatar, Group, ScrollArea, Tooltip, ActionIcon } from "@mantine/core";
+import { Button, Table, Flex, TextInput, Avatar, Group, ScrollArea, Tooltip, ActionIcon ,Badge , Pagination} from "@mantine/core";
 import { getCompanies, createCompany, getIndustries, getSectors,getStatus } from "../../api";
 import styles from "./Companies.module.css";
 import { useNavigate } from "react-router-dom";
@@ -16,18 +16,20 @@ function Companies() {
   const [newCompanyWebsite, setNewCompanyWebsite] = useState("");
   const [inputWords, setInputWords] = useState({}); // Track new input values
   const [opened, setOpened] = useState(false);
-
   const [scrolled, setScrolled] = useState(false);
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 15; // Adjust items per page as needed
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchCompanies();
-  }, []);
+  }, [currentPage]);
 
   const fetchCompanies = async () => {
     try {
-      const response = await getCompanies();
+      const response = await getCompanies(currentPage, itemsPerPage);
       setCompanies(response.data || []);
     } catch (error) {
       console.error("Error fetching companies:", error);
@@ -124,16 +126,19 @@ function Companies() {
       sectors: inputWords.sectors ? [{ id: "", name: inputWords.sectors }] : [],
       skills: inputWords.skills ? inputWords.skills.split(",").map(skill => skill.trim()) : [],
       statusId: inputWords.statusId || "",
+      // status:{
+      //   id: "a847d030-18ed-4602-a574-d73af4d1133c",
+      //   color:"#000000",
+      //   name: "Active",
+      //   position: 0,
+      // },
       type: inputWords.type || "",
       website: inputWords.website || ""
     };
 
-
     try {
       const response = await createCompany(newCompany);
-
       setCompanies((prevCompanies) => [...prevCompanies, response]);
-
       // Reset inputWords to clear the modal fields
       setInputWords({});
       setOpened(false);
@@ -145,6 +150,12 @@ function Companies() {
       }
     }
   };
+  console.log("companies:",companies.length);
+
+  // Calculate current companies based on pagination
+  const indexOfLastCompany = currentPage * itemsPerPage;
+  const indexOfFirstCompany = indexOfLastCompany - itemsPerPage;
+  const currentCompanies = companies.slice(indexOfFirstCompany, indexOfLastCompany);
 
   return (
     <div className="container">
@@ -169,8 +180,8 @@ function Companies() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {Array.isArray(companies) &&
-                  companies.map((company) => (
+                {Array.isArray(currentCompanies) &&
+                  currentCompanies.map((company) => (
                     <Table.Tr key={company.id}>
                       <Avatar src={company.logoUrl} alt={company.name} radius="xl" size={40} />
                       <td>{company.name}</td>
@@ -193,14 +204,10 @@ function Companies() {
                       </td>
                       <td>
                         {company.status && company.status.name && company.status.color ? (
-                          <Button
-                            // variant="light"
-                            style={{ backgroundColor: company.status.color }}
-                            onClick={() => {
-                            }}
-                          >
-                            {company.status.name}{" "}
-                          </Button>
+                            <Badge style={{ backgroundColor: company.status.color }}
+                          onClick={() => {
+                          }} color="lime.4" variant="filled">
+                          {company.status.name}{" "} </Badge>
                         ) : (
                           "N/A"
                         )}
@@ -210,8 +217,7 @@ function Companies() {
                           <Button
                             variant="outline"
                             size="xs"
-                            onClick={() => navigate(`/company/${company.id}`)}
-                          >
+                            onClick={() => navigate(`/company/${company.id}`)}>
                             View
                           </Button>
                         </Group>
@@ -222,8 +228,14 @@ function Companies() {
               </Table.Tbody>
             </Table>
           </ScrollArea>
+          {/* Pagination */}
+          <Pagination
+            total={Math.ceil(companies.length / itemsPerPage)}
+            page={currentPage}
+            onChange={setCurrentPage}
+            styles={{ pagination: { marginTop: '1rem', justify: 'end' } }} // Adjust as needed
+          />
         </div>
-
         <AddModal
           opened={opened}
           setOpened={setOpened}
