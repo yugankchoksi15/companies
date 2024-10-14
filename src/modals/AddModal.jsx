@@ -83,15 +83,15 @@ function AddModal({
         return; // Stop if there are invalid fields
       }
     } else if (activeStep === 2) {
-      const requiredFields = ["placements", "openJobs"];
+      const requiredFields = ["languages", "skills"];
       const invalidFields = requiredFields.filter((field) => {
         const value = form.values[field];
-        return !value; // Check if the field is empty
+        return !value || (Array.isArray(value) && value.length === 0); // Check if it's empty or an empty array
       });
-
+  
       // If any required field is invalid, stop moving to the next step
       if (invalidFields.length > 0) {
-        alert("Please fill in all required fields: Placements, Open Jobs."); // Show an alert to inform the user
+        alert("Please fill in all required fields: Languages, Skills."); // Show an alert to inform the user
         return; // Stop if there are invalid fields
       }
     } else if (activeStep === 3) {
@@ -114,66 +114,54 @@ function AddModal({
   };
 
   const handleStepClick = (step) => {
-    // Only validate fields in the first step
-    if (activeStep === 0) {
-      const requiredFields = ["name", "reference", "employees", "description"];
-
-      const invalidFields = requiredFields.filter((field) => {
-        const value = form.values[field];
-        return !value; // Check if the field is empty
-      });
-
-      // If any required field is invalid, stop moving to the next step
-      if (invalidFields.length > 0) {
-        alert(
-          "Please fill in all required fields: Name, Reference, Employees, and Description."
-        ); // Show an alert to inform the user
-        return; // Stop if there are invalid fields
+    if (step > activeStep) {
+      // Step forward, so validation is required
+      let invalidFields = [];
+      
+      if (activeStep === 0) {
+        const requiredFields = ["name", "reference", "employees", "description"];
+        invalidFields = requiredFields.filter((field) => !form.values[field]);
+  
+        if (invalidFields.length > 0) {
+          alert("Please fill in all required fields: Name, Reference, Employees, and Description.");
+          return; // Stop if there are invalid fields
+        }
+      } else if (activeStep === 1) {
+        const requiredFields = ["phone", "email", "website"];
+        invalidFields = requiredFields.filter((field) => !form.values[field]);
+  
+        if (invalidFields.length > 0) {
+          alert("Please fill in all required fields: Phone, Email, and Website.");
+          return;
+        }
+      } else if (activeStep === 2) {
+        const requiredFields = ["languages", "skills"];
+        invalidFields = requiredFields.filter(
+          (field) => !form.values[field] || (Array.isArray(form.values[field]) && form.values[field].length === 0)
+        );
+  
+        if (invalidFields.length > 0) {
+          alert("Please fill in all required fields: Languages and Skills.");
+          return;
+        }
+      } else if (activeStep === 3) {
+        const requiredFields = ["headOfficeName", "addressLine", "cityName"];
+        invalidFields = requiredFields.filter((field) => !form.values[field]);
+  
+        if (invalidFields.length > 0) {
+          alert("Please fill in all required fields: Head Office Name, Address Line, and City Name.");
+          return;
+        }
       }
-    } else if (activeStep === 1) {
-      const requiredFields = ["phone", "email", "website"];
-      const invalidFields = requiredFields.filter((field) => {
-        const value = form.values[field];
-        return !value; // Check if the field is empty
-      });
-
-      // If any required field is invalid, stop moving to the next step
-      if (invalidFields.length > 0) {
-        alert("Please fill in all required fields: phone, Email, Website."); // Show an alert to inform the user
-        return; // Stop if there are invalid fields
-      }
-    } else if (activeStep === 2) {
-      const requiredFields = ["placements", "openJobs"];
-
-      const invalidFields = requiredFields.filter((field) => {
-        const value = form.values[field];
-        return !value; // Check if the field is empty
-      });
-
-      // If any required field is invalid, stop moving to the next step
-      if (invalidFields.length > 0) {
-        alert("Please fill in all required fields: Placements, Open Jobs."); // Show an alert to inform the user
-        return; // Stop if there are invalid fields
-      }
-    } else if (activeStep === 3) {
-      const requiredFields = ["headOfficeName", "addressLine", "cityName"];
-      const invalidFields = requiredFields.filter((field) => {
-        const value = form.values[field];
-        return !value; // Check if the field is empty
-      });
-
-      // If any required field is invalid, stop moving to the next step
-      if (invalidFields.length > 0) {
-        alert(
-          "Please fill in all required fields: Head Office Name, Address Line, City Name."
-        ); // Show an alert to inform the user
-        return; // Stop if there are invalid fields
-      }
+  
+      // Validation passed, move to the next step
+      setActiveStep(step);
+    } else {
+      // Step backward, allow without validation
+      setActiveStep(step);
     }
-
-    // Move to the next step
-    setActiveStep((prev) => prev + 1);
   };
+  
   const handlePreviousStep = () => {
     if (activeStep > 0) setActiveStep((prev) => prev - 1);
   };
@@ -297,7 +285,7 @@ function AddModal({
       <form
         onSubmit={form.onSubmit((values) => {
 
-          handleAddCompany(values,activeStep);
+          handleAddCompany(values,form,setActiveStep);
           setOpened(false);
         })}
       >
@@ -334,8 +322,9 @@ function AddModal({
             Previous
           </Button>
           {activeStep < 4 && <Button onClick={handleNextStep}>Next</Button>}
+  
           {activeStep === 4 && (
-            <Button type="submit" color="teal">
+            <Button type="submit" color="teal" disabled={!form.values.ownerName || !form.values.status}>
               Submit
             </Button>
           )}

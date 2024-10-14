@@ -103,7 +103,7 @@ function Companies() {
     fetchStatus();
   };
 
-  const handleAddCompany = (inputWords) => {
+  const handleAddCompany = (inputWords,form,setActiveStep) => {
     // Mapping the inputWords to the required payload format
     const newCompany = {
       id: Math.random().toString(36).substr(2, 9), // Generate a unique ID
@@ -203,12 +203,12 @@ function Companies() {
 
     // Update the companies state
     setCompanies((prevCompanies) => [...prevCompanies, newCompany]);
-
+    form.reset();
     // Clear input words and close modal after successful addition
     setInputWords({});
+    setActiveStep(0);
     setOpened(false);
   };
-  console.log("companies:",companies.length);
 
   // Calculate current companies based on pagination
   const indexOfLastCompany = currentPage * itemsPerPage;
